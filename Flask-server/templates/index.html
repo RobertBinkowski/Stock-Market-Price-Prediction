@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en-UK">
+  <head>
+    <!-- Font ---------------------------------------------------------------- -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://fonts.googleapis.com/css?family=Comfortaa&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Baloo+Da+2&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Imports-------------------------------------------------------------- -->
+    <!-- Root-->
+    <link href="Style/root.css" rel="stylesheet" type="text/css" media="all" />
+    <!-- Font Awesome -->
+    <script
+      src="https://kit.fontawesome.com/d44a860748.js  "
+      crossorigin="anonymous"
+    ></script>
+    <!-- Rest ----------------------------------------------------------------- -->
+    <meta
+      name="Stock Market Prediction Project"
+      content="Stock Market Prediction Project"
+    />
+    <link rel="icon" href="#" />
+    <title>Stock Market Prediction Project</title>
+  </head>
+  <body>
+    <div>
+      {% if stock == 0 %}
+      <script> window.alert("Wrong Stock Tag");</script>
+      {% endif %}
+      <h1>Stock Market Prediction Project</h1>
+      <form action="" method="POST">
+        <label for="stock_tag">Stock Tag: </label><input type="text" name="stock_tag" value="AAPL" /></br>
+        <input type="submit" value="Predict" >
+      </form>
+      {% if stock != 0 %}
+      {{stock}}
+      {% endif %}
+    </div>
+  </body>
+</html>
