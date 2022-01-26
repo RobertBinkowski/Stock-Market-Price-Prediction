@@ -10,6 +10,10 @@ import json
 import plotly
 import pickle
 import os
+from os import path
+
+# needs to be removed and improved
+import time
 
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.metrics import mean_absolute_percentage_error
@@ -21,53 +25,57 @@ from datetime import date, timedelta
 from flask import Flask, redirect, url_for, render_template
 import pickle
 
-
-def readFile(stock_ticker):
-    directory = 'Stocks'
-    data = ''
-    if not os.path.isdir(directory):
-        os.mkdir(directory)
-    fileName = directory + '/' + stock_ticker + '.json'
-    if not os.path.exists(fileName):
-        os.makedirs(fileName)
-        with open(fileName, 'w') as outfile:
-            outfile.write(json.dumps(data))
-        return 0
-    with open(fileName) as json_file:
-        output = json.load(json_file)
-    return output
+directory = 'Stocks'
 
 
 def writeFile(stock_ticker, json_data):
-    directory = 'Stocks'
     if not os.path.isdir(directory):
         os.mkdir(directory)
     fileDir = directory + '/' + stock_ticker + '.json'
     with open(fileDir, 'w') as outfile:
-        outfile.write(json.dumps(json_data))
+        json.dump(json_data, outfile)
     return 0
 
 
 def toJson(pred):
-
-    json_output = {
-        'predictionDate': date.today().strftime("%Y-%m-%d"),
-        'prediction': pred,
-    }
-    return json.dumps(json_output)
+    json_output = {}
+    json_output["predictionDate"] = date.today().strftime("%Y-%m-%d")
+    json_output["prediction"] = str(pred)
+    return json_output
 
 
-def getPrice(stock_ticker):
+def readFile(stock_ticker):
+    # if no folder exists, create one
+    file_name = directory + '/' + stock_ticker + '.json'
+    output = {}
+    if not os.path.isdir(directory):
+        os.mkdir(directory)
+        return output
+    if not path.isfile(file_name):
+        return output
+    # read file and parse it into a json
+    with open(file_name) as json_file:
+        output = json.load(json_file)
+    return output
+
+
+def getPrice(stock_ticker):  # Does not work
+    stock_ticker = stock_ticker.upper()
+    # Check the stock by it's key
     try:
         web.DataReader(stock_ticker, data_source='yahoo')
     except:
-        return "ERROR Wrong ticket"
-    json_data = json.loads(readFile(stock_ticker))
-    if json_data == '' or json_data["predictionDate"] != date.today().strftime("%Y-%m-%d"):
+        return 0
+    # Get data from previous day
+    json_data = readFile(stock_ticker)
+    # Check if data was predicted today
+    if json_data == {} or json_data["predictionDate"] != date.today().strftime("%Y-%m-%d"):
         output = predict(stock_ticker)
         writeFile(stock_ticker, toJson(output))
-        return output
-    return json_data["prediction"]
+    else:
+        output = json_data["prediction"]
+    time.sleep(5)  # remoive and improve
+    return json_data["prediction"]  # output
 
 
 def predict(stock_ticker):
@@ -270,8 +278,4 @@ def predict(stock_ticker):
     # create graph
     prediction_figure = go.Figure(
         data=[datasets, predicted_closing_price], layout=graphLayout)
-
-    if pred_price[0] == 0:
-        pred_price[0] = 2
-
-    return pred_price[0]
+    return pred_price[0][0]

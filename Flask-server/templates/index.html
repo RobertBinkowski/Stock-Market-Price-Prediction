@@ -21,11 +21,6 @@
       src="https://kit.fontawesome.com/d44a860748.js  "
       crossorigin="anonymous"
     ></script>
-
-    <!-- Vue -->
-    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
-    <!-- plotty-->
-    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
     <!-- Rest ----------------------------------------------------------------- -->
     <meta
       name="Stock Market Prediction Project"
@@ -34,24 +29,19 @@
     <link rel="icon" href="#" />
     <title>Stock Market Prediction Project</title>
   </head>
-
   <body>
-    <div id="app">
-      <h1>[[title]]</h1>
-      <div
-        class="container"
-        id="chart1"
-        style="margin: 0 auto; align-items: center; justify-content: center"
-      ></div>
+    <div>
+      {% if stock == 0 %}
+      <script> window.alert("Wrong Stock Tag");</script>
+      {% endif %}
+      <h1>Stock Market Prediction Project</h1>
+      <form action="" method="POST">
+        <label for="stock_tag">Stock Tag: </label><input type="text" name="stock_tag" value="AAPL" /></br>
+        <input type="submit" value="Predict" >
+      </form>
+      {% if stock != 0 %}
+      {{stock}}
+      {% endif %}
     </div>
-    <script type="text/javascript">
-      var app = new Vue({
-        el: "#app",
-        delimiters: ["[[", "]]"],
-        data: {
-          title: "Stock Market Prediction Project",
-        },
-      });
-    </script>
   </body>
 </html>
