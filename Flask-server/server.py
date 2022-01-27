@@ -17,13 +17,14 @@ def home():
 def data():
     stock = ""
     stock_tag = request.form["stock_tag"]
-    stock = getPrice(stock_tag)
-    return render_template(home_page, stock=stock)
+    stock = round(float(getPrice(stock_tag)), 2)
+    chart = getChart()
+    return render_template(home_page, stock=stock, chart=chart)
 
 
 @app.route("/<stock>")
 def prediction(stock):
-    stock = getPrice(stock)
+    stock = round(float(getPrice(stock)), 2)
     return render_template(home_page, stock=stock)
 
 

@@ -12,8 +12,6 @@ import pickle
 import os
 from os import path
 
-# needs to be removed and improved
-import time
 
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.metrics import mean_absolute_percentage_error
@@ -26,6 +24,7 @@ from flask import Flask, redirect, url_for, render_template
 import pickle
 
 directory = 'Stocks'
+figure = ""
 
 
 def writeFile(stock_ticker, json_data):
@@ -41,7 +40,12 @@ def toJson(pred):
     json_output = {}
     json_output["predictionDate"] = date.today().strftime("%Y-%m-%d")
     json_output["prediction"] = str(pred)
+    json_output["chart"] = str(figure)
     return json_output
+
+
+def getChart():
+    return figure
 
 
 def readFile(stock_ticker):
@@ -59,7 +63,7 @@ def readFile(stock_ticker):
     return output
 
 
-def getPrice(stock_ticker):  # Does not work
+def getPrice(stock_ticker):
     stock_ticker = stock_ticker.upper()
     # Check the stock by it's key
     try:
@@ -72,9 +76,9 @@ def getPrice(stock_ticker):  # Does not work
     if json_data == {} or json_data["predictionDate"] != date.today().strftime("%Y-%m-%d"):
         output = predict(stock_ticker)
         writeFile(stock_ticker, toJson(output))
+        return output
     else:
         output = json_data["prediction"]
-    time.sleep(5)  # remoive and improve
     return json_data["prediction"]  # output
 
 
@@ -239,6 +243,8 @@ def predict(stock_ticker):
         data=[trainingSet, testingSet, validationSet], layout=graphLayout)
     # Use the model to predict tomorrows closing price of a given stock
     # Get the stock data
+    figure = model_testing_figure
+    print(figure)
     stock_quote = web.DataReader(
         stock_ticker, data_source='yahoo', start='2014-01-01', end=tomorrow)
     # filter the stock data to contain only closing stock price
