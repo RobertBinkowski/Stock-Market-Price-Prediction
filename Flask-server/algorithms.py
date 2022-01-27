@@ -12,8 +12,6 @@ import pickle
 import os
 from os import path
 
-# needs to be removed and improved
-import time
 
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.metrics import mean_absolute_percentage_error
