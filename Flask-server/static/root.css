@@ -1,0 +1,102 @@
+/*
+Main Root file
+
+*/
+:root {
+  --fott-col: #353535;
+  --bg-1: #ffffff;
+  --bg-2: #dddddd;
+  --acc-1: #3b3b3b;
+  --acc-2: #c9c8c8;
+  --txt-1: var(--acc-1);
+  --txt-2: var(--acc-2);
+  --tr-f: 0.3s;
+  --tr-s: 0.7s;
+  --rad-1: 0.2em;
+  --rad-2: 3em;
+}
+
+/* ------------------------------------ DEFAULT */
+html {
+  font-family: "Bodoni MT", sans-serif;
+  padding: 0;
+  margin: 0;
+  overflow-x: hidden;
+  color: var(--txt-1);
+  text-align: center;
+}
+
+html body {
+  font-size: 1.3em;
+  font-family: "Bodoni MT", sans-serif;
+  padding: 0;
+  margin: 0;
+  overflow-x: hidden;
+  background: var(--bg-1);
+  color: var(--txt-1);
+  text-align: center;
+  text-shadow: 1px 2px var(--acc-2);
+}
+
+html body div {
+  border-radius: 0.2em;
+}
+
+html main {
+  min-height: 65vh;
+}
+
+html main a {
+  text-decoration: none;
+}
+
+html footer {
+  background-color: var(--fott-col);
+  padding: 1em;
+  color: white;
+  min-height: 20vh;
+  margin-bottom: 2em;
+  position: relative;
+  bottom: -6em;
+  text-shadow: none;
+}
+
+html footer ul {
+  list-style: none;
+}
+
+html footer a {
+  text-decoration: none;
+  color: white;
+}
+
+div {
+  max-width: 1000px;
+  margin-left: auto;
+  margin-right: auto;
+  background-color: var(--bg-2);
+  padding: 1em;
+}
+
+div form input {
+  padding: 0.5em;
+  border: none;
+  border-radius: 0.5em;
+}
+
+div form input[type="submit"] {
+  padding-left: 2em;
+  padding-right: 2em;
+}
+
+div form input[type="text"] {
+  margin: 1em;
+  padding-left: 1em;
+  width: 20em;
+  font-weight: bold;
+}
+
+div form input[type="text"]:focus {
+  outline: none;
+}
+/*# sourceMappingURL=root.css.map */

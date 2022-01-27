@@ -12,13 +12,17 @@
       href="https://fonts.googleapis.com/css?family=Baloo+Da+2&display=swap"
       rel="stylesheet"
     />
-
     <!-- Imports-------------------------------------------------------------- -->
     <!-- Root-->
-    <link href="Style/root.css" rel="stylesheet" type="text/css" media="all" />
+    <link
+      href="{{ url_for('static', filename='root.css')}}"
+      rel="stylesheet"
+      type="text/css"
+      media="all"
+    />
     <!-- Font Awesome -->
     <script
-      src="https://kit.fontawesome.com/d44a860748.js  "
+      src="https://kit.fontawesome.com/d44a860748.js"
       crossorigin="anonymous"
     ></script>
     <!-- Rest ----------------------------------------------------------------- -->
@@ -30,18 +34,62 @@
     <title>Stock Market Prediction Project</title>
   </head>
   <body>
-    <div>
+    <header>
       {% if stock == 0 %}
-      <script> window.alert("Wrong Stock Tag");</script>
+      <script>
+        window.alert("Wrong Stock Tag");
+      </script>
       {% endif %}
       <h1>Stock Market Prediction Project</h1>
-      <form action="" method="POST">
-        <label for="stock_tag">Stock Tag: </label><input type="text" name="stock_tag" value="AAPL" /></br>
-        <input type="submit" value="Predict" >
-      </form>
+    </header>
+    <main>
+      <div>
+        <form action="" method="POST">
+          <label for="stock_tag"><b>Stock Tag</b></label
+          ><input type="text" name="stock_tag" />
+          <input type="submit" value="Predict" />
+        </form>
+      </div>
+      <br />
       {% if stock != 0 %}
-      {{stock}}
+      <div>
+        <p>Stock prediction</p>
+        <p><b>{{stock}}</b></p>
+        {{chart}}
+      </div>
       {% endif %}
-    </div>
+    </main>
+    <footer>
+      <ul>
+        <li>
+          <a href="https://github.com/RobertBinkowski/Stock-Market-Price-Prediction">
+            <i class="fab fa-github"></i>
+          </br>Project by:</a></li>
+        <li>
+        </br>
+          <a href="https://github.com/RobertBinkowski"
+            ><i class="fas fa-code-branch"></i><strong
+              > Robert Binkowski -
+              C00237917</strong
+            ></a
+          >
+        </li>
+        <li>
+          <a href="https://github.com/safyn"
+            ><i class="fas fa-code-branch"></i><strong
+              > Krzysztof Bas -
+              C00238768</strong
+            ></a
+          >
+        </li>
+        <li>
+          <a href="https://github.com/GonnaBePRO"
+            ><i class="fas fa-code-branch"></i><strong
+              > Michał Matusiewicz - C00231687
+            </strong></a
+          >
+        </li>
+      </ul>
+    </footer>
   </body>
 </html>
