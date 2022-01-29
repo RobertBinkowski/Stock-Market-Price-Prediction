@@ -27,59 +27,62 @@ directory = 'Stocks'
 figure = ""
 
 
-def writeFile(stock_ticker, json_data):
-    if not os.path.isdir(directory):
+def write_file(stock_ticker, json_data):  # Write to a file
+    if not os.path.isdir(directory):  # create a file if non exists
         os.mkdir(directory)
-    fileDir = directory + '/' + stock_ticker + '.json'
-    with open(fileDir, 'w') as outfile:
+    fileDir = directory + '/' + stock_ticker + '.json'  # set name of the file
+    with open(fileDir, 'w') as outfile:  # Write to the file from string
         json.dump(json_data, outfile)
     return 0
 
 
-def toJson(pred):
+def to_json(pred, stock_tag):  # simple json Format String base for a file
     json_output = {}
+    json_output["stockTag"] = stock_tag
     json_output["predictionDate"] = date.today().strftime("%Y-%m-%d")
     json_output["prediction"] = str(pred)
-    json_output["chart"] = str(figure)
     return json_output
 
 
-def getChart():
-    return figure
-
-
-def readFile(stock_ticker):
-    # if no folder exists, create one
+def read_file(stock_ticker):  # Read stock
     file_name = directory + '/' + stock_ticker + '.json'
     output = {}
+    # if no folder exists, create file and return
     if not os.path.isdir(directory):
         os.mkdir(directory)
         return output
     if not path.isfile(file_name):
         return output
-    # read file and parse it into a json
+    # read file and parse it into a json format
     with open(file_name) as json_file:
         output = json.load(json_file)
     return output
 
 
-def getPrice(stock_ticker):
+def get_price(stock_ticker):  # main checker for price tag and if data checked
     stock_ticker = stock_ticker.upper()
-    # Check the stock by it's key
+    # Check if the stock exists by it's key
     try:
         web.DataReader(stock_ticker, data_source='yahoo')
     except:
         return 0
     # Get data from previous day
-    json_data = readFile(stock_ticker)
+    # If no file exixts return false
+    json_data = read_file(stock_ticker)
     # Check if data was predicted today
+    # Check if data is empty(no file) or date is old
+    # Then the algorithm will try to train itself and predict future values
     if json_data == {} or json_data["predictionDate"] != date.today().strftime("%Y-%m-%d"):
         output = predict(stock_ticker)
-        writeFile(stock_ticker, toJson(output))
+        write_file(stock_ticker, to_json(output, stock_ticker))
         return output
     else:
         output = json_data["prediction"]
-    return json_data["prediction"]  # output
+    # output = []  # Does not work
+    # output[0] = json_data["stockTAG"]
+    # output[1] = json_data["prediction"]
+    # ouptut[2] = "figure"
+    return output  # output
 
 
 def predict(stock_ticker):
@@ -91,7 +94,6 @@ def predict(stock_ticker):
     # Get the past stock ticker values (between start and end dates)
     stock_data_frame = web.DataReader(
         stock_ticker, data_source='yahoo', start='2014-01-01', end=today)
-
     # Filter data frame to contain only Closing Stock Values
     closing_data = stock_data_frame.filter(['Close'])
 
@@ -130,11 +132,7 @@ def predict(stock_ticker):
         training_set_a.append(scaled_training_data[i-30:i, 0])
         # append 31st value that the model is to predict
         training_set_b .append(scaled_training_data[i, 0])
-        # print data just to check the values
-        if i <= 30:
-            print(training_set_a)
-            print(training_set_b)
-            print()
+
     # Convert training_set_a and training_set_b data sets to numby arrays
     # So that they can be used by the LSTM
     training_set_a, training_set_b = np.array(
@@ -244,7 +242,7 @@ def predict(stock_ticker):
     # Use the model to predict tomorrows closing price of a given stock
     # Get the stock data
     figure = model_testing_figure
-    print(figure)
+
     stock_quote = web.DataReader(
         stock_ticker, data_source='yahoo', start='2014-01-01', end=tomorrow)
     # filter the stock data to contain only closing stock price
