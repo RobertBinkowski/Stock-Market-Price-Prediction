@@ -46,8 +46,9 @@ html main {
   min-height: 65vh;
 }
 
-html main a {
-  text-decoration: none;
+html a {
+  text-decoration: inherit;
+  color: inherit;
 }
 
 html footer {
@@ -87,6 +88,7 @@ div form input {
 div form input[type="submit"] {
   padding-left: 2em;
   padding-right: 2em;
+  cursor: pointer;
 }
 
 div form input[type="text"] {

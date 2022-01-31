@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en-UK">
+  <head>
+    <!-- Font ---------------------------------------------------------------- -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://fonts.googleapis.com/css?family=Comfortaa&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Baloo+Da+2&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Imports-------------------------------------------------------------- -->
+    <!-- Root-->
+    <link
+      href="{{ url_for('static', filename='root.css')}}"
+      rel="stylesheet"
+      type="text/css"
+      media="all"
+    />
+    <!-- Font Awesome -->
+    <script
+      src="https://kit.fontawesome.com/d44a860748.js"
+      crossorigin="anonymous"
+    ></script>
+    <!-- Rest ----------------------------------------------------------------- -->
+    <meta
+      name="Stock Market Prediction Project"
+      content="Stock Market Prediction Project"
+    />
+    <link rel="icon" href="#" />
+    <title>{% block title %}{%endblock%}</title>
+  </head>
+  <body>
+    <header>
+      <h1><a href="/" target="_self">{%block h1%}{%endblock%}</a></h1>
+    </header>
+    <main>
+      {% block content %}
+      {% endblock %}
+    </main>
+    <footer>
+      <ul>
+        <li>
+          <a href="https://github.com/RobertBinkowski/Stock-Market-Price-Prediction">
+            <i class="fab fa-github"></i>
+          </br>Project by:</a></li>
+        <li>
+        </br>
+          <a href="https://github.com/RobertBinkowski"
+            ><i class="fas fa-code-branch"></i><strong
+              > Robert Binkowski -
+              C00237917</strong
+            ></a
+          >
+        </li>
+        <li>
+          <a href="https://github.com/safyn"
+            ><i class="fas fa-code-branch"></i><strong
+              > Krzysztof Bas -
+              C00238768</strong
+            ></a
+          >
+        </li>
+        <li>
+          <a href="https://github.com/GonnaBePRO"
+            ><i class="fas fa-code-branch"></i><strong
+              > Michał Matusiewicz - C00231687
+            </strong></a
+          >
+        </li>
+      </ul>
+    </footer>
+  </body>
+</html>

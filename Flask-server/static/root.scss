@@ -40,9 +40,10 @@ html {
   }
   main {
     min-height: 65vh;
-    a {
-      text-decoration: none;
-    }
+  }
+  a {
+    text-decoration: inherit;
+    color: inherit;
   }
   footer {
     background-color: var(--fott-col);
@@ -78,6 +79,7 @@ div {
     input[type="submit"] {
       padding-left: 2em;
       padding-right: 2em;
+      cursor: pointer;
     }
     input[type="text"] {
       margin: 1em;
