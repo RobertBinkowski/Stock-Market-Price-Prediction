@@ -20,7 +20,7 @@ def data():
     stock = []
     stock_tag = request.form["stock_tag"]
     stock = get_price(stock_tag)
-    if stock == 0:
+    if stock == []:
         return render_template(home_page, stock=0)
     return render_template(home_page, stock=stock)
 
