@@ -11,7 +11,7 @@ pred_page = "pred.html"
 @app.route("/home")
 @app.route("/")
 def home():
-    return render_template(home_page)
+    return render_template(home_page, stock=0)
 
 
 @app.route("/home")
@@ -21,8 +21,8 @@ def data():
     stock_tag = request.form["stock_tag"]
     stock = get_price(stock_tag)
     if stock == 0:
-        return render_template(home_page, stock_prediction=0)
-    return render_template(home_page, stock_tag=stock.get_tag(), stock_prediction=stock.get_pred(), chart=stock.get_chart(), date=stock.get_date())
+        return render_template(home_page, stock=0)
+    return render_template(home_page, stock=stock)
 
 
 @app.route("/<stock_tag>")
@@ -30,7 +30,7 @@ def prediction(stock_tag):
     stock = get_price(stock_tag)
     if stock == 0:
         return render_template(home_page, stock_prediction=0)
-    return render_template(home_page, stock_tag=stock.get_tag(), stock_prediction=stock.get_pred(), chart=stock.get_chart(), date=stock.get_date())
+    return render_template(home_page, stock=stock)
 
 
 if __name__ == "__main__":
