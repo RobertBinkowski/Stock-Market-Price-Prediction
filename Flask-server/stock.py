@@ -5,6 +5,7 @@ from datetime import date, timedelta
 
 class Stock:
     chart = ""
+    error_rate = 0
 
     def __init__(self, tag, pred):
         self.tag = tag
@@ -26,6 +27,12 @@ class Stock:
     def set_tag(self, tag):
         self.tag = tag
 
+    def get_error_rate(self):
+        return self.error_rate
+
+    def set_error_rate(self, error_rate):
+        self.error_rate = round(error_rate)
+
     def set_pred(self, pred):
         self.date = date.today().strftime("%Y-%m-%d")
         self.pred = pred
@@ -38,5 +45,6 @@ class Stock:
         json_output["stockTag"] = str(self.tag)
         json_output["predictionDate"] = date.today().strftime("%Y-%m-%d")
         json_output["prediction"] = str(self.pred)
+        json_output["errorRate"] = str(self.error_rate)
         json_output["chart"] = str(self.chart)
         return json_output

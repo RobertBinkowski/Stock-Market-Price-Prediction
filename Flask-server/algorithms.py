@@ -67,15 +67,15 @@ def get_price(stock_ticker):  # main checker for price tag and if data checked
     # Then the algorithm will try to train itself and predict future values
     if json_data == {} or json_data["predictionDate"] != date.today().strftime("%Y-%m-%d"):
         # parsing data into a class
-        prediction = predict(stock_ticker)
+        predict(stock_ticker)
         stock.set_tag(stock_ticker)
-        stock.set_pred(prediction)
         # writing data to the file
         write_file(stock_ticker, stock.to_json())
         return stock
     # writing data to the class
     stock.set_tag(str(json_data["stockTag"]))
     stock.set_pred(json_data["prediction"])
+    stock.set_chart(json_data["chart"])
     return stock
 
 
@@ -188,8 +188,11 @@ def predict(stock_ticker):
     # Check the model accuracy by taking the Root Mean Squared Error (RMSE)
     # The lower the RMSE value, the better the fit and accuracy of the model is
     rmse = np.sqrt(np.mean(predictions - testing_set_b)**2)
+
     # Calculate the absolute percentage error for the predictions
     mape = mean_absolute_percentage_error(testing_set_b, predictions)
+    # Parse into stock
+    stock.set_error_rate(mape*100)
     # Plot the data
     # training data set
     training_data_set = closing_data[0:training_data_length]
@@ -197,30 +200,6 @@ def predict(stock_ticker):
     validation_data_set = closing_data[training_data_length:]
     # predicted values data set
     validation_data_set['Predictions'] = predictions
-
-    # Create graph objects
-
-    trainingSet = go.Scatter(
-        x=training_data_set.index,
-        y=training_data_set['Close'],
-        mode='lines',
-        connectgaps=True,
-        name="Training Data"
-    )
-    validationSet = go.Scatter(
-        x=validation_data_set.index,
-        y=validation_data_set['Close'],
-        mode='lines',
-        connectgaps=True,
-        name="Actual Values"
-    )
-    testingSet = go.Scatter(
-        x=validation_data_set.index,
-        y=validation_data_set['Predictions'],
-        mode='lines',
-        connectgaps=True,
-        name="Predicted Values"
-    )
     # set graph layout
     graphLayout = go.Layout(
         title="Model",
@@ -230,12 +209,6 @@ def predict(stock_ticker):
         width=900,
         height=600
     )
-    # Create graph based on the above data
-    model_testing_figure = go.Figure(
-        data=[trainingSet, testingSet, validationSet], layout=graphLayout)
-    # Use the model to predict tomorrows closing price of a given stock
-    # Get the stock data
-    figure = model_testing_figure
 
     stock_quote = web.DataReader(
         stock_ticker, data_source='yahoo', start='2014-01-01', end=tomorrow)
@@ -249,8 +222,6 @@ def predict(stock_ticker):
     data_set = [last_30_values_scaled]
     # Convert data_set to a numpy array
     data_set = np.array(data_set)
-    # Reshape the data so it can be used by the model
-    X_test = np.reshape(data_set, (data_set.shape[0], data_set.shape[1], 1))
     # Predict the next day closing price
     pred_price = model.predict(data_set)
     # Undo the scaling
@@ -276,4 +247,7 @@ def predict(stock_ticker):
     # create graph
     prediction_figure = go.Figure(
         data=[datasets, predicted_closing_price], layout=graphLayout)
-    return round(float(pred_price[0][0]), 2)
+
+    # Place the chart into the stock class
+    stock.set_chart(prediction_figure)
+    stock.set_pred(round(float(pred_price[0][0]), 2))
