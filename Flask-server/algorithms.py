@@ -5,12 +5,11 @@ import pandas_datareader as web
 import numpy as np
 import plotly.graph_objs as go
 
-from datetime import date
 import json
 import plotly
-import pickle
 import os
 from os import path
+from stock import *
 
 
 from sklearn.preprocessing import MinMaxScaler
@@ -24,7 +23,9 @@ from flask import Flask, redirect, url_for, render_template
 import pickle
 
 directory = 'Stocks'
-figure = ""
+chart = ""
+
+stock = Stock("", "")  # Creating a Stock Class
 
 
 def write_file(stock_ticker, json_data):  # Write to a file
@@ -34,14 +35,6 @@ def write_file(stock_ticker, json_data):  # Write to a file
     with open(fileDir, 'w') as outfile:  # Write to the file from string
         json.dump(json_data, outfile)
     return 0
-
-
-def to_json(pred, stock_tag):  # simple json Format String base for a file
-    json_output = {}
-    json_output["stockTag"] = stock_tag
-    json_output["predictionDate"] = date.today().strftime("%Y-%m-%d")
-    json_output["prediction"] = str(pred)
-    return json_output
 
 
 def read_file(stock_ticker):  # Read stock
@@ -73,16 +66,17 @@ def get_price(stock_ticker):  # main checker for price tag and if data checked
     # Check if data is empty(no file) or date is old
     # Then the algorithm will try to train itself and predict future values
     if json_data == {} or json_data["predictionDate"] != date.today().strftime("%Y-%m-%d"):
-        output = predict(stock_ticker)
-        write_file(stock_ticker, to_json(output, stock_ticker))
-        return output
-    else:
-        output = json_data["prediction"]
-    # output = []  # Does not work
-    # output[0] = json_data["stockTAG"]
-    # output[1] = json_data["prediction"]
-    # ouptut[2] = "figure"
-    return output  # output
+        # parsing data into a class
+        prediction = predict(stock_ticker)
+        stock.set_tag(stock_ticker)
+        stock.set_pred(prediction)
+        # writing data to the file
+        write_file(stock_ticker, stock.to_json())
+        return stock
+    # writing data to the class
+    stock.set_tag(str(json_data["stockTag"]))
+    stock.set_pred(json_data["prediction"])
+    return stock
 
 
 def predict(stock_ticker):
@@ -282,4 +276,4 @@ def predict(stock_ticker):
     # create graph
     prediction_figure = go.Figure(
         data=[datasets, predicted_closing_price], layout=graphLayout)
-    return pred_price[0][0]
+    return round(float(pred_price[0][0]), 2)

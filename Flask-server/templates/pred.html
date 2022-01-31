@@ -4,16 +4,7 @@ stock_prediction == 0 %}
 <script>
   window.alert("Wrong Stock Tag");
 </script>
-{% endif %}
-<div>
-  <form action="" method="POST">
-    <label for="stock_tag"><b>Stock Tag</b></label
-    ><input type="text" name="stock_tag" />
-    <input type="submit" value="Predict" />
-  </form>
-</div>
-<br />
-{% if stock != 0 %}
+{% endif %} {% if stock != 0 %}
 <div>
   <p>{{stock_tag}} prediction</p>
   <p><b>{{stock_prediction}}</b> for the date {{date}}</p>

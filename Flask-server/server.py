@@ -1,9 +1,11 @@
 from flask import Flask, redirect, url_for, render_template, request
 from algorithms import *
+from stock import *
 import pickle
 
 app = Flask(__name__)
 home_page = "index.html"
+pred_page = "pred.html"
 
 
 @app.route("/home")
@@ -17,14 +19,18 @@ def home():
 def data():
     stock = []
     stock_tag = request.form["stock_tag"]
-    stock = round(float(get_price(stock_tag)), 2)
-    return render_template(home_page, stock_prediction=stock[0], chart=stock[2], stock_tag=stock[1])
+    stock = get_price(stock_tag)
+    if stock == 0:
+        return render_template(home_page, stock_prediction=0)
+    return render_template(home_page, stock_tag=stock.get_tag(), stock_prediction=stock.get_pred(), chart=stock.get_chart(), date=stock.get_date())
 
 
-@app.route("/<stock>")
-def prediction(stock):
-    stock = round(float(get_price(stock)), 2)
-    return render_template(home_page, stock=stock)
+@app.route("/<stock_tag>")
+def prediction(stock_tag):
+    stock = get_price(stock_tag)
+    if stock == 0:
+        return render_template(home_page, stock_prediction=0)
+    return render_template(home_page, stock_tag=stock.get_tag(), stock_prediction=stock.get_pred(), chart=stock.get_chart(), date=stock.get_date())
 
 
 if __name__ == "__main__":
