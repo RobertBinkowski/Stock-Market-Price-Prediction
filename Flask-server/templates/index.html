@@ -9,8 +9,9 @@ stock_prediction == 0 %}
   <form action="" method="POST">
     <label for="stock_tag"><b>Stock Tag</b></label
     ><input type="text" name="stock_tag" />
-    <input type="submit" value="Predict" />
+    <input type="submit" onclick="loading()" value="Predict" />
   </form>
+  <img src="../static/Ajux_loader.gif" id="loading" onclick="window.open(this.src)">
 </div>
 <br />
 {% if stock != 0 %}
@@ -27,4 +28,10 @@ stock_prediction == 0 %}
     {{stock.get_chart()}}
   </div>
 </div>
-{% endif %} {%endblock%}
+{% endif %} 
+<script>
+function loading(){
+  document.getElementById("loading").style.display = "block";
+}
+</script>
+{%endblock%}

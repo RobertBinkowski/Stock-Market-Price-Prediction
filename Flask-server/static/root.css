@@ -71,6 +71,12 @@ html footer a {
   color: white;
 }
 
+#loading {
+  display: none;
+  margin: auto;
+  width: 10em;
+}
+
 div {
   max-width: 1000px;
   margin-left: auto;
