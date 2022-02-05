@@ -63,6 +63,11 @@ html {
     }
   }
 }
+#loading {
+  display: none;
+  margin: auto;
+  width: 2em;
+}
 
 div {
   max-width: 1000px;
