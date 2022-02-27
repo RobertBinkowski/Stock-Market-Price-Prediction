@@ -11,7 +11,11 @@ stock_prediction == 0 %}
     ><input type="text" name="stock_tag" />
     <input type="submit" onclick="loading()" value="Predict" />
   </form>
-  <img src="../static/Ajux_loader.gif" id="loading" onclick="window.open(this.src)">
+  <img
+    src="../static/Ajux_loader.gif"
+    id="loading"
+    onclick="window.open(this.src)"
+  />
 </div>
 <br />
 {% if stock != 0 %}
@@ -23,15 +27,11 @@ stock_prediction == 0 %}
     <strong>{{stock.get_date()}}</strong><br />
     with general error rate of <strong>{{stock.get_error_rate()}}%</strong>
   </p>
-  <div>
-    <h2>Chart</h2>
-    {{stock.get_chart()}}
-  </div>
 </div>
-{% endif %} 
+{% endif %}
 <script>
-function loading(){
-  document.getElementById("loading").style.display = "block";
-}
+  function loading() {
+    document.getElementById("loading").style.display = "block";
+  }
 </script>
 {%endblock%}
